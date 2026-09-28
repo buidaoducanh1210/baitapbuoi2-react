@@ -1,98 +1,180 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        {/* ==================== */}
+        {/* PHẦN 6 KHỐI MÀU */}
+        {/* ==================== */}
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+        <View style={styles.blocks}>
+          {/* Ô 1 */}
+          <ColorBlock color="#2f80ed" label="1" style={styles.topBlock} />
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+          {/* Ô 2 */}
+          <ColorBlock color="#ff3b3f" label="2" style={styles.topBlock} />
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+          {/* Hàng 3 - 4 - 5 - ô trắng */}
+          <View style={styles.middleRow}>
+            {/* Ô 3 */}
+            <ColorBlock
+              color="#ffd21c"
+              label="3"
+              labelColor="#000000"
+              style={styles.columnBlock}
+            />
+
+            {/* Ô 4 */}
+            <ColorBlock color="#2db36b" label="4" style={styles.columnBlock} />
+
+            {/* Ô 5 */}
+            <ColorBlock color="#7b3fe4" label="5" style={styles.columnBlock} />
+
+            {/* Ô thứ 4 để trắng */}
+            <View style={styles.columnBlock} />
+          </View>
+
+          {/* Ô 6 */}
+          <ColorBlock color="#ff7412" label="6" style={styles.bottomBlock} />
+        </View>
+
+        {/* ==================== */}
+        {/* HỌ TÊN - MSSV */}
+        {/* ==================== */}
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Bui Dao Duc Anh - BIT240025</Text>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
+/* ============================= */
+/* COMPONENT KHỐI MÀU */
+/* ============================= */
+
+function ColorBlock({
+  color,
+  label,
+  labelColor = "#ffffff",
+  style,
+}: ColorBlockProps) {
+  return (
+    <View
+      style={[
+        styles.block,
+        style,
+        {
+          backgroundColor: color,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.label,
+          {
+            color: labelColor,
+          },
+        ]}
+      >
+        {label}
+      </Text>
+    </View>
+  );
+}
+
+/* ============================= */
+/* TYPE */
+/* ============================= */
+
+type ColorBlockProps = {
+  color: string;
+  label: string;
+  labelColor?: string;
+  style?: StyleProp<ViewStyle>;
+};
+
+/* ============================= */
+/* STYLE */
+/* ============================= */
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
+  /* Toàn màn hình */
   safeArea: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    backgroundColor: "#ffffff",
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
+
+  container: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    backgroundColor: "#ffffff",
+    paddingHorizontal: 16,
   },
-  title: {
-    textAlign: 'center',
+
+  /* ============================= */
+  /* 6 KHỐI */
+  /* ============================= */
+
+  blocks: {
+    width: "100%",
+    maxWidth: 480,
+    alignSelf: "center",
+    gap: 8,
   },
-  code: {
-    textTransform: 'uppercase',
+
+  /* Ô 1 và 2 */
+  topBlock: {
+    width: "100%",
+    aspectRatio: 5.16,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  /* Hàng 3 - 4 - 5 - trắng */
+  middleRow: {
+    width: "100%",
+    aspectRatio: 2.5,
+    flexDirection: "row",
+    gap: 8,
+  },
+
+  /* 4 cột bằng nhau */
+  columnBlock: {
+    flex: 1,
+  },
+
+  /* Ô 6 */
+  bottomBlock: {
+    width: "100%",
+    aspectRatio: 3,
+  },
+
+  /* Khối chung */
+  block: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  /* Số 1 -> 6 */
+  label: {
+    fontSize: 40,
+    fontWeight: "700",
+  },
+
+  /* ============================= */
+  /* FOOTER */
+  /* ============================= */
+
+  footer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingBottom: 16,
+  },
+
+  footerText: {
+    fontSize: 16,
+    color: "#333333",
   },
 });
